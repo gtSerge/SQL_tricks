@@ -1,0 +1,18 @@
+Кстати, планы выполнения этих запросов демонстрируют одинаковые стоимости наиболее расходных операций – сканирования таблицы 
+и сортировку (которая я первом случае присутствует неявно и вызвана операцией группировки).
+
+SELECT maker FROM Product 
+WHERE type = 'PC'
+GROUP BY maker
+HAVING COUNT(*) > 2;
+
+
+SELECT maker 
+FROM (
+SELECT maker, RANK() OVER(PARTITION BY maker ORDER BY model) rnk
+FROM Product 
+WHERE type = 'PC'
+) Ranked_makers
+WHERE rnk = 3;
+
+---------------------------------------------------------------------
